@@ -1,0 +1,97 @@
+﻿@model TaskManagement.Models.Project
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerCompany)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerCompany)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExecutorCompany)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExecutorCompany)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Priority)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LeaderId)
+        </dt>
+        @foreach (var item in Model.Employees)
+        {
+            @if (item.Id == Model.LeaderId)
+            {
+                <dd class="col-sm-10">
+                    @item.LastName @item.FirstName @item.MiddleName    @item.Email
+                </dd>
+            }
+        }
+    </dl>
+    <dl class="dl-horizontal">
+        @if (Model.Employees.Count != 0)
+        {
+            <dt>Project's employees</dt>
+            @foreach (var item in Model.Employees)
+            {
+                <form method="post" asp-action="DeleteEmployee" asp-route-projectId="@Model.Id" asp-route-employeeId="@item.Id">
+                <dd class="col-sm-10">
+                        @item.LastName @item.FirstName @item.MiddleName    @item.Email
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </dd>
+                </form>
+            }
+        }
+    </dl>
+    <form asp-action="AddEmployees" asp-route-projectId="@Model.Id">
+        <div><b>Add new employee</b></div>
+        @foreach (var item in ViewBag.Employees)
+        {
+            @if (item.Id != Model.LeaderId)
+            {
+                <input type="checkbox" name="employeesIds" value="@item.Id" />
+                @item.LastName @item.FirstName @item.MiddleName    @item.Email
+                <br />
+            }
+        }
+        <p></p>
+        <div>
+            <input type="submit" value="Add employees" class="btn btn-dark btn-sm" />
+        </div>
+    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
