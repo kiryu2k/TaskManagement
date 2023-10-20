@@ -33,7 +33,8 @@ public class ProjectsController : Controller
     [HttpGet("Details/{id:int}")]
     public async Task<IActionResult> Details(int id)
     {
-        var project = await _ctx.Project.Include(e => e.Employees).FirstOrDefaultAsync(e => e.Id == id);
+        var project = await _ctx.Project.Include(e => e.Employees)
+            .Include(e => e.Tasks).FirstOrDefaultAsync(e => e.Id == id);
         if (project == null)
         {
             return NotFound();
@@ -109,6 +110,26 @@ public class ProjectsController : Controller
             project.Employees.Remove(employee);
             await _ctx.SaveChangesAsync();
         }
+        return RedirectToRoute(new
+        {
+            controller = "Projects",
+            action = "Details",
+            id = projectId
+        });
+    }
+
+    [HttpPost("DeleteTask")]
+    public async Task<IActionResult> DeleteTask(int projectId, int taskId)
+    {
+        var project = await _ctx.Project.Include(e => e.Tasks)
+            .FirstOrDefaultAsync(e => e.Id == projectId);
+        if (project == null)
+        {
+            return NotFound();
+        }
+        var task = await _ctx.Task.FindAsync(taskId);
+        project.Tasks.Remove(task);
+        await _ctx.SaveChangesAsync();
         return RedirectToRoute(new
         {
             controller = "Projects",

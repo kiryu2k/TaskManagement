@@ -67,7 +67,22 @@
             {
                 <form method="post" asp-action="DeleteEmployee" asp-route-projectId="@Model.Id" asp-route-employeeId="@item.Id">
                 <dd class="col-sm-10">
-                        @item.LastName @item.FirstName @item.MiddleName    @item.Email
+                    @item.LastName @item.FirstName @item.MiddleName    @item.Email
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </dd>
+                </form>
+            }
+        }
+    </dl>
+    <dl class="dl-horizontal">
+        @if (Model.Tasks.Count != 0)
+        {
+            <dt>Project's tasks</dt>
+            @foreach (var item in Model.Tasks)
+            {
+                <form method="post" asp-action="DeleteTask" asp-route-projectId="@Model.Id" asp-route-taskId="@item.Id">
+                <dd class="col-sm-10">
+                    @item.Name
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </dd>
                 </form>
@@ -92,6 +107,8 @@
     </form>
 </div>
 <div>
+    <br/>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-controller="Tasks" asp-action="Create">Add new one task</a> |
     <a asp-action="Index">Back to List</a>
 </div>

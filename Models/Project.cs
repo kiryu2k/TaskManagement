@@ -13,4 +13,5 @@ public class Project
     [Required] public int Priority { get; set; }
     [Required] public int LeaderId { get; set; }
     public virtual ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
+    public virtual ICollection<Models.Task> Tasks { get; set; } = new HashSet<Models.Task>();
 }
