@@ -10,33 +10,59 @@
     <h4>Employee</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MiddleName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MiddleName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        @if (Model.AuthoringTasks.Count != 0)
+        {
+            <dt>Employees' authoring tasks</dt>
+            @foreach (var item in Model.AuthoringTasks)
+            {
+                <form method="post" asp-controller="Tasks" asp-action="Delete" asp-route-id="@item.Id">
+                <dd class="col-sm-10">
+                        @item.Name
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </dd>
+                </form>
+            }
+        }
+    </dl>
+    <dl class="dl-horizontal">
+        @if (Model.ExecutingTasks.Count != 0)
+        {
+            <dt>Employees' executing tasks</dt>
+            @foreach (var item in Model.ExecutingTasks)
+            {
+                <dd class="col-sm-10">@item.Name</dd>
+            }
+        }
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-controller="Tasks" asp-action="Create">Add new one task</a> |
     <a asp-action="Index">Back to List</a>
 </div>

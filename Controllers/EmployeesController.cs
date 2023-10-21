@@ -24,7 +24,8 @@ public partial class EmployeesController : Controller
     [HttpGet("Details/{id:int}")]
     public async Task<IActionResult> Details(int id)
     {
-        var employee = await _ctx.Employee.FindAsync(id);
+        var employee = await _ctx.Employee.Include(e => e.AuthoringTasks)
+            .Include(e => e.ExecutingTasks).FirstOrDefaultAsync(e => e.Id == id);
         if (employee == null)
         {
             return NotFound();
